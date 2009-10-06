@@ -6,7 +6,7 @@ main() ->
 	#template { file="./wwwroot/template.html"}.
 
 title() ->
-	"web_index".
+        oracle:greet().
 
 body() ->
 	#label{text="web_index body."}.
