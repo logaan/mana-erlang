@@ -4,23 +4,22 @@
 -compile(export_all).
 
 main() -> 
-  #template { file="./wwwroot/template.html"}.
+  #template { file = "./wwwroot/template.html"}.
 
 title() ->
   oracle:greet().
 
 body() ->
-  Data = oracle:all_cards(),
-  Map = #card{ name=nameLabel@text, cost=costLabel@text },
-  [
-    #label{text="web_index body."},
-    #bind{ id=oracleBinding, data=Data, map=Map, body=[
-      #panel{ body=[
-        #hr{},
-        #label{ id=nameLabel },
-        #label{ id=costLabel }
-      ]}
+  #bind{
+    id    = oracleBinding,
+    data  = oracle:all_cards(),
+    map   = #card{ name = nameLabel@text, cost = costLabel@body },
+    body  = [
+    #panel{ body = [
+      #h2{ id = nameLabel },
+      #p{  id = costLabel }
     ]}
-  ].
+  ]}.
 
 event(_) -> ok.
+
