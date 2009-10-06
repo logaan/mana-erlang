@@ -7,4 +7,5 @@ erl \
         -pa ../nitrogen/ebin \
 	-pa ./ebin -pa ./include \
 	-s make all \
+	-eval "application:start(mnesia)" \
 	-eval "application:start(mana_erlang)"
