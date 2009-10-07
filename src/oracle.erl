@@ -6,7 +6,8 @@
   reset_schema/0,
   create_tables/0,
   insert_card/1,
-  all_cards/0
+  all_cards/0,
+  read_cards/1
 ]).
 
 greet() -> "Hello kitty.".
@@ -31,3 +32,8 @@ all_cards() ->
   F = fun() -> qlc:e(qlc:q([X || X <- mnesia:table(card)])) end,
   {atomic, Cards} = mnesia:transaction(F),
   Cards.
+
+read_cards(Filename) ->
+  {ok, FileContents} = file:read_file(Filename),
+  json_eep:json_to_term(binary_to_list(FileContents)).
+
