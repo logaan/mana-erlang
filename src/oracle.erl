@@ -7,6 +7,7 @@
   create_tables/0,
   insert_card/1,
   all_cards/0,
+  load_cards/1,
   read_cards/1
 ]).
 
@@ -33,7 +34,20 @@ all_cards() ->
   {atomic, Cards} = mnesia:transaction(F),
   Cards.
 
+load_cards(Filename) ->
+  Cards = read_cards(Filename),
+  [{atomic, ok} = insert_card(Card) || Card <- Cards],
+  ok.
+
 read_cards(Filename) ->
   {ok, FileContents} = file:read_file(Filename),
-  json_eep:json_to_term(binary_to_list(FileContents)).
+  JsonCards = json_eep:json_to_term(binary_to_list(FileContents)),
+  lists:map(fun json_card_to_record/1, JsonCards).
+
+json_card_to_record( {[{<<"cost">>,Cost}, {<<"card_type">>,Type}, {<<"pt">>,PT}, {<<"name">>,Name}, {<<"text">>,Text}]}) ->
+  #card{ name = Name, cost = Cost, type = Type, text = Text, pt = PT };
+json_card_to_record({[{<<"cost">>, Type}, {<<"card_type">>,null}, {<<"name">>, Name}]}) ->
+  #card{ name = Name, type = Type };
+json_card_to_record( {[{<<"cost">>,Cost}, {<<"card_type">>,Type}, {<<"name">>,Name}, {<<"text">>,Text}]}) ->
+  #card{ name = Name, cost = Cost, type = Type, text = Text }.
 
