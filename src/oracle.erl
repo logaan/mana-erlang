@@ -2,16 +2,14 @@
 -include_lib("stdlib/include/qlc.hrl").
 -include("records.hrl").
 -export([
-  greet/0,
   reset_schema/0,
   create_tables/0,
   insert_card/1,
   all_cards/0,
+  name_search/1,
   load_cards/1,
   read_cards/1
 ]).
-
-greet() -> "Hello kitty.".
 
 reset_schema() ->
   mnesia:stop(),
@@ -31,6 +29,15 @@ insert_card(Card) ->
 
 all_cards() ->
   F = fun() -> qlc:e(qlc:q([X || X <- mnesia:table(card)])) end,
+  {atomic, Cards} = mnesia:transaction(F),
+  Cards.
+
+name_search(Name) ->
+  ArgumentName = binary_to_list(Name),
+  F = fun() -> qlc:e(qlc:q(
+      [ X || X <- mnesia:table(card),
+                  string:str(binary_to_list(X#card.name), ArgumentName) /= 0
+      ])) end,
   {atomic, Cards} = mnesia:transaction(F),
   Cards.
 

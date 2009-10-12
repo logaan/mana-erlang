@@ -7,7 +7,7 @@ main() ->
   #template { file = "./wwwroot/template.html"}.
 
 title() ->
-  oracle:greet().
+  "Create Deck".
 
 body() ->
   #bind{
