@@ -33,10 +33,9 @@ all_cards() ->
   Cards.
 
 name_search(Name) ->
-  ArgumentName = binary_to_list(Name),
   F = fun() -> qlc:e(qlc:q(
       [ X || X <- mnesia:table(card),
-                  string:str(binary_to_list(X#card.name), ArgumentName) /= 0
+                  string:str(binary_to_list(X#card.name), Name) /= 0
       ])) end,
   {atomic, Cards} = mnesia:transaction(F),
   Cards.
