@@ -1,5 +1,6 @@
 -module (mana_erlang_app).
--export ([start/2, stop/1, route/1, request/1]).
+-export ([start/2, stop/1, route/1, request/1, reset_schema/0, create_tables/0]).
+-include("records.hrl").
 -behavior(application).
 
 start(_, _) ->
@@ -37,3 +38,15 @@ route(Path) -> nitrogen:route(Path).
 %% issue a client-side redirect to a new page.
 
 request(Module) -> nitrogen:request(Module).
+
+reset_schema() ->
+    mnesia:stop(),
+    mnesia:delete_schema( [node()] ),
+    mnesia:create_schema( [node()] ),
+    mnesia:start().
+
+create_tables() ->
+    mnesia:create_table( card, [{disc_copies, [node()]},
+                                {attributes, record_info(fields, card)}]),
+    mnesia:create_table( deck, [{disc_copies, [node()]},
+                                {attributes, record_info(fields, deck)}]).
