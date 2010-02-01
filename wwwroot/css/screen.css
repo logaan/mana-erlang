@@ -1,0 +1,34 @@
+/* General */
+h1 { font-size: 200%; }
+h2 { font-size: 150%; }
+h3 { font-size: 120%; }
+
+/* Whole document */
+h1 { display: none; }
+#container { position: relative; background-color: purple; }
+
+/* Your area */
+#your-cards { height: 100%; width: 70%; position: relative; background-color: pink; }
+#your-battlefield { height: 14em; }
+
+#your-life { position: absolute; right: 0em; top: 1em; }
+
+#your-battlefield .default-group { float: left; }
+#your-battlefield .first-group { float: left; }
+#your-battlefield .second-group { float: left; }
+
+#your-hand { float: left; }
+#your-graveyard { float: left; }
+#your-exile { float: left; }
+#your-library { float: left; }
+
+/* Their area */
+#minor-column { height: 100%; width: 30%; position: absolute; right: 0em; top: 0em; background-color: red; }
+#their-cards { position: relative; background-color: blue; }
+#their-life { position: absolute; right: 0em; top: 1em; }
+
+/* Chat */
+#chat { bottom: 0em; height: 8em; width: 70%; position: fixed; background-color: green; }
+
+/* Controls */
+#controls { bottom: 0em; height: 8em; width: 30%; position: fixed; background-color: orange; }
